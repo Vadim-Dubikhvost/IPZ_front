@@ -4,6 +4,7 @@ import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box, Button, TextField } from '@mui/material'
 import { makeStyles } from '@material-ui/styles'
+import { authAPI } from '../API/api'
 
 const schema = yup.object().shape({
 	username: yup.string().required(),
@@ -13,7 +14,7 @@ const schema = yup.object().shape({
 		.oneOf([yup.ref('password'), null], 'Passwords must match')
 })
 
-const useStyles = makeStyles({
+export const useStyles = makeStyles({
 	form: {
 		display: "flex",
 		justifyContent: "center",
@@ -66,24 +67,15 @@ export const LoginPage = () => {
 			password: data.password
 		}
 
-		const req = await fetch("https://localhost:5000/api/User/RegisterUser", {
-			method: "POST",
-			headers: {
-				"Access-Control-Allow-Headers": "*",
-				"Access-Control-Allow-Origin": "*",
-				"Access-Control-Allow-Credentials": "true",
-				"Access-Control-Allow-Methods": "GET,HEAD,OPTIONS,POST,PUT",
-				"Content-Type": "application/json"
-			},
-			body: JSON.stringify(dataObj)
-		})
+		const res = await authAPI.registerUser(dataObj)
+		console.log(res);
 	}
 
 	return (
 		<>
 			<Box component="form"
 				className={classes.form}
-				onSubmit={handleSubmit(onSubmit)}
+			//onSubmit={handleSubmit(onSubmit)}
 			>
 				<TextField id="outlined-basic" {...register('username')} label="Username" variant="outlined" InputProps={{
 					className: classes.input,
