@@ -40,3 +40,21 @@ export const createEditEventAPI = {
 			.then(response => response.data);
 	}
 }
+
+export const EventPageAPI = {
+	getPosters(page){
+		return instance.get(`/api/Poster/GetPostersPage?pageNum=${page}&posterCount=5`, {headers:{
+			Authorization:"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImN0eSI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InZhZGljaGthIiwiZW1haWwiOiJ2YWRpY2hrYUBnbWFpbC5jb20iLCJuYmYiOjE2NTYxNTA4OTMsImV4cCI6MTY1Njc1NTY5MywiaWF0IjoxNjU2MTUwODkzfQ.8AgacekACEbFvvHAD5hwPtMqoBnGJmLhvAnWpneWUC4"//`${window.localStorage.getItem("login")} ${window.localStorage.getItem("token")}`
+		}}).then(response => response.data);
+	},
+	getMyPosters(){
+		return instance.get(`/api/Poster/GetMyPosters`, {headers:{
+			Authorization:"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImN0eSI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InZhZGljaGthIiwiZW1haWwiOiJ2YWRpY2hrYUBnbWFpbC5jb20iLCJuYmYiOjE2NTYxNTA4OTMsImV4cCI6MTY1Njc1NTY5MywiaWF0IjoxNjU2MTUwODkzfQ.8AgacekACEbFvvHAD5hwPtMqoBnGJmLhvAnWpneWUC4"//`${window.localStorage.getItem("login")} ${window.localStorage.getItem("token")}`
+		}}).then(response => response.data);
+	},
+	getPostersSearch(text){
+		return instance.get(`/api/Poster/GetPostersSearch?searchingText=${text}`, {headers:{
+			Authorization:"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImN0eSI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InZhZGljaGthIiwiZW1haWwiOiJ2YWRpY2hrYUBnbWFpbC5jb20iLCJuYmYiOjE2NTYxNTA4OTMsImV4cCI6MTY1Njc1NTY5MywiaWF0IjoxNjU2MTUwODkzfQ.8AgacekACEbFvvHAD5hwPtMqoBnGJmLhvAnWpneWUC4"//`${window.localStorage.getItem("login")} ${window.localStorage.getItem("token")}`
+		}}).then(response => response.data);
+	}
+}
