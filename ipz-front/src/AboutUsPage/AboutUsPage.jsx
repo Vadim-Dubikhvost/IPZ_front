@@ -9,13 +9,20 @@ export const AboutUs = () => {
 			margin: "300px auto"
 		}}>
 			<div>
-				123
+				Роботу виконали учні групи КІУКІ-19-8:
 			</div>
 			<div>
-				321
+				Воронін Роман,Гончаров Данило,Довгаль Владислав, Дубихвіст Вадим
 			</div>
 			<div>
-				412
+				СЛАВА УКРАЇНІ!
+			</div>
+			<div>
+				<img src={require(`../images/1.webp`)} style={{
+					marginBottom: "15px",
+					maxWidth: "300px",
+					maxHeight: "150px"
+				}} />
 			</div>
 		</div>
 	)

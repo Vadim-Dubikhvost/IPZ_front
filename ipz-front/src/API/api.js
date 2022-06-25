@@ -4,12 +4,39 @@ const instance = axios.create({
 	baseURL: 'https://localhost:5000/',
 	headers: {
 				"Content-Type": "application/json",
+
 	},
 });
 
 export const authAPI = {
 	registerUser(userData){
 		return instance.post(`api/User/RegisterUser`,  userData )
+			.then(response => response.data);
+	},
+	loginUser(userData){
+		return instance.post(`/api/User/LoginUser`,  userData )
+			.then(response => response.data);
+	}
+}
+
+export const createEditEventAPI = {
+	createEvent(eventData){
+		return instance.post(`/api/Poster/PostPoster`,  eventData,{headers:{
+			Authorization:"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImN0eSI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InZhZGljaGthIiwiZW1haWwiOiJ2YWRpY2hrYUBnbWFpbC5jb20iLCJuYmYiOjE2NTYxNTA4OTMsImV4cCI6MTY1Njc1NTY5MywiaWF0IjoxNjU2MTUwODkzfQ.8AgacekACEbFvvHAD5hwPtMqoBnGJmLhvAnWpneWUC4"//`Bearer ${window.localStorage.getItem("token")}`
+		}} )
+			.then(response => response.data);
+	},
+
+	getPosterData(uuid){
+		return instance.get(`/api/Poster/GetPoster?guid=${"1ac7d51c-5bf1-4d4c-9b56-eab9a7a21d03"}`, {headers:{
+			Authorization:"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImN0eSI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InZhZGljaGthIiwiZW1haWwiOiJ2YWRpY2hrYUBnbWFpbC5jb20iLCJuYmYiOjE2NTYxNTA4OTMsImV4cCI6MTY1Njc1NTY5MywiaWF0IjoxNjU2MTUwODkzfQ.8AgacekACEbFvvHAD5hwPtMqoBnGJmLhvAnWpneWUC4"//`${window.localStorage.getItem("login")} ${window.localStorage.getItem("token")}`
+		}}).then(response => response.data);
+	},
+
+	editEvent(eventData, uuid){
+		return instance.put(`/api/Poster/UpdatePoster?posterId=${"1ac7d51c-5bf1-4d4c-9b56-eab9a7a21d03"}`,  eventData, {headers:{
+			Authorization:"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImN0eSI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InZhZGljaGthIiwiZW1haWwiOiJ2YWRpY2hrYUBnbWFpbC5jb20iLCJuYmYiOjE2NTYxNTA4OTMsImV4cCI6MTY1Njc1NTY5MywiaWF0IjoxNjU2MTUwODkzfQ.8AgacekACEbFvvHAD5hwPtMqoBnGJmLhvAnWpneWUC4"//`Bearer ${window.localStorage.getItem("token")}`
+		}} )
 			.then(response => response.data);
 	}
 }

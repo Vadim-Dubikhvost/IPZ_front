@@ -52,7 +52,7 @@ export const useStyles = makeStyles({
 )
 
 
-export const LoginPage = () => {
+export const LoginPage = ({ mode, ...props }) => {
 	const { register, handleSubmit, formState: { errors }, reset } = useForm({ resolver: yupResolver(schema) })
 
 	const [isRegister, setIsRegister] = React.useState(false)
@@ -61,21 +61,50 @@ export const LoginPage = () => {
 
 	const onSubmit = async (data) => {
 		console.log(data);
-		const dataObj = {
-			login: data.username,
-			email: isRegister ? data.email : null,
-			password: data.password
-		}
+		if (isRegister) {
+			const dataObj = {
+				login: data.username,
+				email: isRegister ? data.email : null,
+				password: data.password
+			}
+			try {
+				const res = await authAPI.registerUser(dataObj)
 
-		const res = await authAPI.registerUser(dataObj)
-		console.log(res);
+				window.localStorage.setItem('token', res.token)
+			} catch (e) {
+				alert("Something went wrong. Try to send message to our support support@gmail.com")
+			}
+		} else {
+			const validation = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+			if (validation.test(data.username)) {
+				const dataObj = {
+					email: data.username,
+					password: data.password
+				}
+				try {
+					const res = await authAPI.loginUser(dataObj)
+				} catch (e) {
+					alert("Something went wrong. Try to send message to our support support@gmail.com")
+				}
+			} else {
+				const dataObj = {
+					login: data.username,
+					password: data.password
+				}
+				try {
+					const res = await authAPI.loginUser(dataObj)
+				} catch (e) {
+					alert("Something went wrong. Try to send message to our support support@gmail.com")
+				}
+			}
+		}
 	}
 
 	return (
 		<>
 			<Box component="form"
 				className={classes.form}
-			//onSubmit={handleSubmit(onSubmit)}
+				onSubmit={handleSubmit(onSubmit)}
 			>
 				<TextField id="outlined-basic" {...register('username')} label="Username" variant="outlined" InputProps={{
 					className: classes.input,

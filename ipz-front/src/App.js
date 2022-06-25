@@ -3,11 +3,12 @@ import './App.css';
 import { CreateEditEvent } from './CreateEditEvent/CreateEditEventPage';
 import { LoginPage } from './LoginPage/LoginPage';
 import '@fontsource/roboto/500.css';
+import { EventPage } from './EventPage/EventPage';
 
 function App() {
   return (
     <div className="App">
-      <CreateEditEvent />
+      <EventPage />
     </div>
   );
 }
