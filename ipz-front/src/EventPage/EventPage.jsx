@@ -1,6 +1,7 @@
 import React from 'react'
 import { EventPageAPI } from '../API/api'
 import Modal from 'react-modal';
+import { useNavigate } from "react-router-dom"
 
 export const EventPage = () => {
 	return (
@@ -18,6 +19,7 @@ export const EventPage = () => {
 }
 
 const Header = () => {
+	const navigate = useNavigate()
 	return (
 		<div style={{
 			backgroundColor: "#E0783B",
@@ -40,7 +42,33 @@ const Header = () => {
 					borderColor: "#FAC164",
 					borderRadius: "5px",
 					color: "#5F544D",
+					cursor: "pointer",
+					marginRight: "10px"
+				}} onClick={e => {
+					e.preventDefault()
+					navigate("/event")
+				}}>Create event</button>
+				<button style={{
+					background: "#FAC164",
+					borderColor: "#FAC164",
+					borderRadius: "5px",
+					color: "#5F544D",
+					cursor: "pointer",
+					marginRight: "10px"
+				}} onClick={e => {
+					e.preventDefault()
+					navigate("/about")
+				}}>About us</button>
+				<button style={{
+					background: "#FAC164",
+					borderColor: "#FAC164",
+					borderRadius: "5px",
+					color: "#5F544D",
 					cursor: "pointer"
+				}} onClick={e => {
+					e.preventDefault()
+					window.localStorage.setItem('token', "")
+					navigate("/")
 				}}>Logout</button>
 			</div>
 		</div>
@@ -53,6 +81,7 @@ const Events = () => {
 	const [pageCount, setPageCount] = React.useState(1)
 	const [posters, setPosters] = React.useState([])
 	const [selectedEvent, setSelectedEvent] = React.useState(null)
+	const [searchingText, setSearchingText] = React.useState("")
 
 	const getEvents = async (pageCount) => {
 		const res = await EventPageAPI.getPosters(pageCount)
@@ -64,13 +93,33 @@ const Events = () => {
 		setPosters(res)
 	}
 
+	const getEventsBySearch = async () => {
+		const res = await EventPageAPI.getPostersSearch(searchingText)
+		setPosters(res)
+	}
+
+	const navigate = useNavigate()
+
 	React.useEffect(() => {
-		if (selectedItem === "Events") {
+		if (selectedItem === "Events" && searchingText === "") {
 			getEvents(pageCount)
 		} else if (selectedItem === "My Events") {
 			getMyEvents()
 		}
-	}, [selectedItem, pageCount])
+	}, [selectedItem, pageCount, searchingText])
+
+	React.useEffect(() => {
+		if (searchingText !== "") {
+			let timeoutId = setTimeout(() => {
+				getEventsBySearch()
+			}, 1000)
+
+			return () => {
+				clearTimeout(timeoutId)
+			}
+		}
+	}, [searchingText])
+
 	return (
 		<div style={{
 			display: "flex"
@@ -137,6 +186,15 @@ const Events = () => {
 						}}
 					>Next</div>
 				</div>
+				{selectedItem === "Events" && <div style={{
+					marginTop: "15px"
+				}}>
+					<input style={{
+						border: "2px solid #FAC164"
+					}} value={searchingText} onChange={e => {
+						setSearchingText(e.target.value)
+					}} />
+				</div>}
 			</div>
 			<div style={{
 				marginLeft: "15px",
@@ -223,10 +281,30 @@ const Events = () => {
 						display: "flex",
 						justifyContent: "center"
 					}}>
-						<button>
+						{selectedItem === "My Events" && <button style={{
+							background: "#FAC164",
+							borderColor: "#FAC164",
+							borderRadius: "5px",
+							color: "#5F544D",
+							cursor: "pointer",
+							marginRight: "10px"
+						}} onClick={e => {
+							e.preventDefault()
+							navigate(`/event?uuid=123`)
+						}}>
 							Edit
-						</button>
-						<button>
+						</button>}
+						<button style={{
+							background: "#FAC164",
+							borderColor: "#FAC164",
+							borderRadius: "5px",
+							color: "#5F544D",
+							cursor: "pointer",
+							marginRight: "10px"
+						}} onClick={e => {
+							e.preventDefault()
+							setSelectedEvent(null)
+						}}>
 							Close
 						</button>
 					</div>

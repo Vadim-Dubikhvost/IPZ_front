@@ -5,6 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Box, Button, TextField } from '@mui/material'
 import { makeStyles } from '@material-ui/styles'
 import { authAPI } from '../API/api'
+import { useNavigate } from "react-router-dom"
 
 const schema = yup.object().shape({
 	username: yup.string().required(),
@@ -59,8 +60,9 @@ export const LoginPage = ({ mode, ...props }) => {
 
 	const classes = useStyles()
 
+	const navigate = useNavigate()
+
 	const onSubmit = async (data) => {
-		console.log(data);
 		if (isRegister) {
 			const dataObj = {
 				login: data.username,
@@ -70,7 +72,12 @@ export const LoginPage = ({ mode, ...props }) => {
 			try {
 				const res = await authAPI.registerUser(dataObj)
 
-				window.localStorage.setItem('token', res.token)
+
+				if (res.status === 200) {
+					window.localStorage.setItem('token', res.data.token)
+
+					navigate(`/events`)
+				}
 			} catch (e) {
 				alert("Something went wrong. Try to send message to our support support@gmail.com")
 			}
@@ -83,6 +90,12 @@ export const LoginPage = ({ mode, ...props }) => {
 				}
 				try {
 					const res = await authAPI.loginUser(dataObj)
+
+					if (res.status === 200) {
+						window.localStorage.setItem('token', res.data.token)
+
+						navigate(`/events`)
+					}
 				} catch (e) {
 					alert("Something went wrong. Try to send message to our support support@gmail.com")
 				}
@@ -93,6 +106,12 @@ export const LoginPage = ({ mode, ...props }) => {
 				}
 				try {
 					const res = await authAPI.loginUser(dataObj)
+
+					if (res.status === 200) {
+						window.localStorage.setItem('token', res.data.token)
+
+						navigate(`/events`)
+					}
 				} catch (e) {
 					alert("Something went wrong. Try to send message to our support support@gmail.com")
 				}

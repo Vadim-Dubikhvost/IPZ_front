@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { useStyles } from "../LoginPage/LoginPage";
 import { createEditEventAPI } from "../API/api";
 import ImageUploading from "react-images-uploading";
+import { useSearchParams, useNavigate } from "react-router-dom";
 
 const schema = yup.object().shape({
 	title: yup.string().required(),
@@ -16,6 +17,10 @@ const schema = yup.object().shape({
 
 export const CreateEditEvent = ({ mode, posterId, ...props }) => {
 	const { register, handleSubmit, formState: { errors }, reset } = useForm({ resolver: yupResolver(schema) })
+
+	const [searchParams, setSearchParams] = useSearchParams();
+
+	const navigate = useNavigate()
 
 	const classes = useStyles()
 
@@ -28,6 +33,8 @@ export const CreateEditEvent = ({ mode, posterId, ...props }) => {
 		try {
 			const res = await createEditEventAPI.getPosterData(props.posterId)
 			setPoster(res)
+			setTags(res.tags)
+			setImage(res.avatarLink)
 		}
 		catch (e) {
 			alert("Something went wrong. Try to send message to our support support@gmail.com")
@@ -44,18 +51,12 @@ export const CreateEditEvent = ({ mode, posterId, ...props }) => {
 	};
 
 	React.useEffect(() => {
-		if (mode === "edit") {
-			setPoster(getPosters())
+		if (searchParams.get("uuid")) {
+			getPosters()
 		}
 		//getPosters()
-	}, [])
+	}, [searchParams])
 
-	React.useEffect(() => {
-		if (poster !== null) {
-			setTags(poster.tags)
-			setImage(poster.avatarLink)
-		}
-	}, [poster])
 
 	const onSubmit = async (data) => {
 		const dataObj = {
@@ -66,10 +67,18 @@ export const CreateEditEvent = ({ mode, posterId, ...props }) => {
 			createdAt: "2022-06-16T16:17:05.840Z"
 		}
 		try {
-			if (!posterId) {
+			if (!searchParams.get("uuid")) {
 				const res = await createEditEventAPI.createEvent(dataObj)
+
+				if (res.status === 200) {
+					navigate("/events")
+				}
 			} else {
 				const res = await createEditEventAPI.editEvent(dataObj)
+
+				if (res.status === 200) {
+					navigate("/events")
+				}
 			}
 		}
 		catch (e) {
@@ -119,7 +128,6 @@ export const CreateEditEvent = ({ mode, posterId, ...props }) => {
 				<textarea id="outlined-basic2" {...register('description')} value={poster && poster.description} onChange={e => {
 					if (poster) { setPoster(prev => { return { ...prev, description: e.target.value } }) }
 				}} placeholder="Description" maxLength="512"
-					//onSubmit={handleSubmit(onSubmit)}
 					style={{
 						marginBottom: "15px",
 						height: "70px",
@@ -134,7 +142,6 @@ export const CreateEditEvent = ({ mode, posterId, ...props }) => {
 				{<ImageUploading
 					value={image}
 					onChange={onChangeImage}
-					//maxNumber={maxNumber}
 					dataURLKey="data_url"
 				>
 					{({
@@ -143,7 +150,6 @@ export const CreateEditEvent = ({ mode, posterId, ...props }) => {
 						isDragging,
 						dragProps
 					}) => (
-						// write your building UI
 						<div className="upload__image-wrapper">
 							<button
 								style={isDragging ? { color: "red" } : null}
@@ -170,11 +176,6 @@ export const CreateEditEvent = ({ mode, posterId, ...props }) => {
 						</div>
 					)}
 				</ImageUploading>}
-				{/* {image && <img src={require(`../images/${image}`)} style={{
-					marginBottom: "15px",
-					maxWidth: "300px",
-					maxHeight: "150px"
-				}} />} */}
 				<div style={{
 					display: "flex",
 					flexDirection: "column"

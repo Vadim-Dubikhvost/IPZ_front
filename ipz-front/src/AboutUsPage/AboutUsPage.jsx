@@ -1,7 +1,11 @@
 import React from 'react';
+import { useNavigate } from "react-router-dom"
 
 
 export const AboutUs = () => {
+
+	const navigate = useNavigate()
+
 	return (
 		<div style={{
 			display: "flex",
@@ -23,6 +27,19 @@ export const AboutUs = () => {
 					maxWidth: "300px",
 					maxHeight: "150px"
 				}} />
+			</div>
+			<div>
+				<button style={{
+					background: "#FAC164",
+					borderColor: "#FAC164",
+					borderRadius: "5px",
+					color: "#5F544D",
+					cursor: "pointer",
+					marginRight: "10px"
+				}} onClick={e => {
+					e.preventDefault()
+					navigate("/events")
+				}}>Back</button>
 			</div>
 		</div>
 	)
