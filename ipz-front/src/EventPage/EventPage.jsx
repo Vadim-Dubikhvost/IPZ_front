@@ -102,7 +102,7 @@ const Events = () => {
 
 	React.useEffect(() => {
 		if (selectedItem === "Events" && searchingText === "") {
-			getEvents(pageCount)
+			getEvents(pageCount - 1)
 		} else if (selectedItem === "My Events") {
 			getMyEvents()
 		}
