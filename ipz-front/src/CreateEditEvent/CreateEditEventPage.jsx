@@ -147,12 +147,18 @@ export const CreateEditEvent = ({ mode, posterId, ...props }) => {
 					{({
 						onImageUpload,
 						onImageRemoveAll,
-						isDragging,
 						dragProps
 					}) => (
 						<div className="upload__image-wrapper">
 							<button
-								style={isDragging ? { color: "red" } : null}
+								style={{
+									background: "#FAC164",
+									borderColor: "#FAC164",
+									borderRadius: "5px",
+									color: "#5F544D",
+									cursor: "pointer",
+									marginRight: "10px"
+								}}
 								onClick={e => {
 									e.preventDefault()
 									onImageUpload()
@@ -163,7 +169,13 @@ export const CreateEditEvent = ({ mode, posterId, ...props }) => {
 								Click here
 							</button>
 							&nbsp;
-							<button onClick={e => {
+							<button style={{
+								background: "#FAC164",
+								borderColor: "#FAC164",
+								borderRadius: "5px",
+								color: "#5F544D",
+								cursor: "pointer",
+							}} onClick={e => {
 								e.preventDefault()
 								onImageRemoveAll()
 							}}>Remove image</button>
@@ -197,6 +209,11 @@ export const CreateEditEvent = ({ mode, posterId, ...props }) => {
 							}} />
 						<button style={{
 							width: "70px",
+							background: "#FAC164",
+							borderColor: "#FAC164",
+							borderRadius: "5px",
+							color: "#5F544D",
+							cursor: "pointer",
 						}} onClick={e => {
 							e.preventDefault()
 							e.stopPropagation()

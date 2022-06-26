@@ -35,7 +35,6 @@ export const AboutUs = () => {
 					borderRadius: "5px",
 					color: "#5F544D",
 					cursor: "pointer",
-					marginRight: "10px"
 				}} onClick={e => {
 					e.preventDefault()
 					navigate("/events")
