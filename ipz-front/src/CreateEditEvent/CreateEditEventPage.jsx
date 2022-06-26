@@ -31,7 +31,7 @@ export const CreateEditEvent = ({ mode, posterId, ...props }) => {
 
 	const getPosters = async () => {
 		try {
-			const res = await createEditEventAPI.getPosterData(props.posterId)
+			const res = await createEditEventAPI.getPosterData(searchParams.get("uuid"))
 			setPoster(res)
 			setTags(res.tags)
 			setImage(res.avatarLink)
@@ -68,13 +68,13 @@ export const CreateEditEvent = ({ mode, posterId, ...props }) => {
 		}
 		try {
 			if (!searchParams.get("uuid")) {
-				const res = await createEditEventAPI.createEvent(dataObj)
+				const res = await createEditEventAPI.createEvent(dataObj, searchParams.get("uuid"))
 
 				if (res.status === 200) {
 					navigate("/events")
 				}
 			} else {
-				const res = await createEditEventAPI.editEvent(dataObj)
+				const res = await createEditEventAPI.editEvent(dataObj, searchParams.get("uuid"))
 
 				if (res.status === 200) {
 					navigate("/events")

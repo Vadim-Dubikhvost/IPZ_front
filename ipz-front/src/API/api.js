@@ -28,13 +28,13 @@ export const createEditEventAPI = {
 	},
 
 	getPosterData(uuid){
-		return instance.get(`/api/Poster/GetPoster?guid=${"1ac7d51c-5bf1-4d4c-9b56-eab9a7a21d03"}`, {headers:{
+		return instance.get(`/api/Poster/GetPoster?guid=${uuid}`, {headers:{
 			Authorization:`Bearer ${window.localStorage.getItem("token")}`//"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImN0eSI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InZhZGljaGthIiwiZW1haWwiOiJ2YWRpY2hrYUBnbWFpbC5jb20iLCJuYmYiOjE2NTYxNTA4OTMsImV4cCI6MTY1Njc1NTY5MywiaWF0IjoxNjU2MTUwODkzfQ.8AgacekACEbFvvHAD5hwPtMqoBnGJmLhvAnWpneWUC4"//`${window.localStorage.getItem("login")} ${window.localStorage.getItem("token")}`
 		}}).then(response => response.data);
 	},
 
 	editEvent(eventData, uuid){
-		return instance.put(`/api/Poster/UpdatePoster?posterId=${"1ac7d51c-5bf1-4d4c-9b56-eab9a7a21d03"}`,  eventData, {headers:{
+		return instance.put(`/api/Poster/UpdatePoster?posterId=${uuid}`,  eventData, {headers:{
 			Authorization:`Bearer ${window.localStorage.getItem("token")}`//"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImN0eSI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InZhZGljaGthIiwiZW1haWwiOiJ2YWRpY2hrYUBnbWFpbC5jb20iLCJuYmYiOjE2NTYxNTA4OTMsImV4cCI6MTY1Njc1NTY5MywiaWF0IjoxNjU2MTUwODkzfQ.8AgacekACEbFvvHAD5hwPtMqoBnGJmLhvAnWpneWUC4"//`Bearer ${window.localStorage.getItem("token")}`
 		}} )
 			.then(response =>{return response});

@@ -290,7 +290,7 @@ const Events = () => {
 							marginRight: "10px"
 						}} onClick={e => {
 							e.preventDefault()
-							navigate(`/event?uuid=123`)
+							navigate(`/event?uuid=${selectedEvent.id}`)
 						}}>
 							Edit
 						</button>}
