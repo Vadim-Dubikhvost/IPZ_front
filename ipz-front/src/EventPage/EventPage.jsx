@@ -317,7 +317,8 @@ const Events = () => {
 						</div>
 						<div style={{
 							display: "flex",
-							margin: "20px 0px 20px 0px"
+							margin: "20px 0px 20px 0px",
+							flexWrap: "wrap"
 						}}>
 							{selectedEvent?.tags?.map((tag, i) => {
 								return <span key={i} style={{
