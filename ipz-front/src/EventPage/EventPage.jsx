@@ -2,6 +2,8 @@ import React from 'react'
 import { EventPageAPI } from '../API/api'
 import Modal from 'react-modal';
 import { useNavigate } from "react-router-dom"
+import moment from 'moment';
+import "../App.css"
 
 export const EventPage = () => {
 	return (
@@ -82,14 +84,15 @@ const Events = () => {
 	const [posters, setPosters] = React.useState([])
 	const [selectedEvent, setSelectedEvent] = React.useState(null)
 	const [searchingText, setSearchingText] = React.useState("")
+	const [isDesc, setIsDesc] = React.useState(false)
 
 	const getEvents = async (pageCount) => {
-		const res = await EventPageAPI.getPosters(pageCount)
+		const res = await EventPageAPI.getPosters(pageCount, isDesc)
 		setPosters(res)
 	}
 
 	const getMyEvents = async () => {
-		const res = await EventPageAPI.getMyPosters()
+		const res = await EventPageAPI.getMyPosters(isDesc)
 		setPosters(res)
 	}
 
@@ -106,7 +109,7 @@ const Events = () => {
 		} else if (selectedItem === "My Events") {
 			getMyEvents()
 		}
-	}, [selectedItem, pageCount, searchingText])
+	}, [selectedItem, pageCount, searchingText, isDesc])
 
 	React.useEffect(() => {
 		if (searchingText !== "") {
@@ -172,7 +175,7 @@ const Events = () => {
 						flexDirection: "column",
 						justifyContent: "center"
 					}}>{pageCount}</div>
-					<div style={{
+					{posters.length > 0 && <div style={{
 						width: "35px",
 						height: "20px",
 						backgroundColor: "#FAC164",
@@ -184,7 +187,50 @@ const Events = () => {
 						onClick={() => {
 							setPageCount(prev => prev + 1)
 						}}
-					>Next</div>
+					>Next</div>}
+				</div>
+				<div style={{
+					display: "flex",
+					justifyContent: "center",
+					alignItems: "center",
+					marginTop: "15px",
+				}}>
+					{isDesc && <div style={{
+						width: "35px",
+						height: "20px",
+						backgroundColor: "#FAC164",
+						fontSize: "12px",
+						fontWeight: "bold",
+						marginLeft: "5px",
+						cursor: "pointer",
+						display: "flex",
+						justifyContent: "center",
+						alignItems: "center"
+					}}
+						onClick={() => {
+							setIsDesc(false)
+						}}
+					>
+						<div className="arrow-up" />
+					</div>}
+					{!isDesc && <div style={{
+						width: "35px",
+						height: "20px",
+						backgroundColor: "#FAC164",
+						fontSize: "12px",
+						fontWeight: "bold",
+						marginLeft: "5px",
+						cursor: "pointer",
+						display: "flex",
+						justifyContent: "center",
+						alignItems: "center"
+					}}
+						onClick={() => {
+							setIsDesc(true)
+						}}
+					>
+						<div className="arrow-down" />
+					</div>}
 				</div>
 				{selectedItem === "Events" && <div style={{
 					marginTop: "15px"
@@ -314,6 +360,9 @@ const Events = () => {
 }
 
 const Event = ({ event, setSelectedEvent }) => {
+
+	const date = moment(event.createdAt).format("LLL")
+
 	return (
 		<div style={{
 			display: "flex",
@@ -357,6 +406,9 @@ const Event = ({ event, setSelectedEvent }) => {
 						}}
 						>{tag}</span>
 					})}
+				</div>
+				<div>
+					{"Created at" + " " + date}
 				</div>
 			</div>
 		</div>
