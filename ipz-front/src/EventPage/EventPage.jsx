@@ -87,6 +87,7 @@ const Events = () => {
 	const [isDesc, setIsDesc] = React.useState(false)
 	const [isShowSupport, setIsShowSupport] = React.useState(false)
 	const [supportData, setSupportData] = React.useState({ email: "", text: "" })
+	const [validError, setValidError] = React.useState(false)
 
 	const getEvents = async (pageCount) => {
 		const res = await EventPageAPI.getPosters(pageCount, isDesc)
@@ -102,6 +103,14 @@ const Events = () => {
 		const res = await EventPageAPI.getPostersSearch(searchingText)
 		setPosters(res)
 	}
+
+	const validateEmail = (email) => {
+		return String(email)
+			.toLowerCase()
+			.match(
+				/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+			);
+	};
 
 	const navigate = useNavigate()
 
@@ -383,7 +392,7 @@ const Events = () => {
 					right: "5%",
 					bottom: "9%",
 					width: "150px",
-					height: "200px",
+					maxHeight: "230px",
 					backgroundColor: "#edeae1",
 					display: "flex",
 					flexDirection: "column",
@@ -408,6 +417,13 @@ const Events = () => {
 							}
 						})
 					}} />
+					{validError && <div style={{
+						marginTop: "10px",
+						fontSize: "10px",
+						color: "red"
+					}}>
+						You shoud enter a valid email
+					</div>}
 					<div style={{
 						marginTop: "10px",
 						fontSize: "12px"
@@ -440,8 +456,14 @@ const Events = () => {
 							borderRadius: "5px",
 							color: "#5F544D",
 							cursor: "pointer",
+							marginBottom: "10px"
 						}} onClick={() => {
-							setSupportData({ email: "", text: "" })
+							if (validateEmail(supportData.email)) {
+								setSupportData({ email: "", text: "" })
+								setValidError(false)
+							} else {
+								setValidError(true)
+							}
 						}}>
 							Send
 						</button>
