@@ -507,7 +507,7 @@ const Event = ({ event, setSelectedEvent }) => {
 				}}>
 					{event.title}
 				</div>
-				<div style={{ display: "flex" }}>
+				<div style={{ display: "flex", flexWrap: "wrap" }}>
 					{event.tags?.map((tag, i) => {
 						return <span key={i} style={{
 							marginRight: "5px",
