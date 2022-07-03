@@ -85,6 +85,8 @@ const Events = () => {
 	const [selectedEvent, setSelectedEvent] = React.useState(null)
 	const [searchingText, setSearchingText] = React.useState("")
 	const [isDesc, setIsDesc] = React.useState(false)
+	const [isShowSupport, setIsShowSupport] = React.useState(false)
+	const [supportData, setSupportData] = React.useState({ email: "", text: "" })
 
 	const getEvents = async (pageCount) => {
 		const res = await EventPageAPI.getPosters(pageCount, isDesc)
@@ -355,6 +357,97 @@ const Events = () => {
 					</div>
 				</div>
 			</Modal>
+			<div style={{
+				position: "fixed",
+				right: "3%",
+				bottom: "3%",
+				width: "45px",
+				height: "45px",
+				backgroundColor: "#FAC164",
+				borderRadius: "50%",
+				display: "flex",
+				justifyContent: "center",
+				alignItems: "center",
+				fontSize: "20px",
+				cursor: "pointer"
+			}}
+				onClick={() => {
+					setIsShowSupport(!isShowSupport)
+				}}
+			>
+				?
+			</div>
+			{
+				isShowSupport && <div style={{
+					position: "fixed",
+					right: "5%",
+					bottom: "9%",
+					width: "150px",
+					height: "200px",
+					backgroundColor: "#edeae1",
+					display: "flex",
+					flexDirection: "column",
+					alignItems: "center",
+					fontSize: "20px",
+					borderRadius: "10px 10px 0 10px"
+				}}>
+					<div style={{
+						marginTop: "10px"
+					}}>
+						Your email:
+					</div>
+					<input style={{
+						width: "100px",
+						display: "flex",
+						justifyContent: "center"
+					}} value={supportData.email} onChange={(e) => {
+						setSupportData(prev => {
+							return {
+								...prev,
+								email: e.target.value
+							}
+						})
+					}} />
+					<div style={{
+						marginTop: "10px",
+						fontSize: "12px"
+					}}>
+						Describe your problem:
+					</div>
+					<div>
+						<textarea style={{
+							width: "100px",
+							height: "70px",
+							display: "flex",
+							justifyContent: "center",
+							marginTop: "5px",
+							resize: "none"
+						}} value={supportData.text} onChange={(e) => {
+							setSupportData(prev => {
+								return {
+									...prev,
+									text: e.target.value
+								}
+							})
+						}} />
+					</div>
+					<div>
+						<button style={{
+							marginTop: "10px",
+							fontSize: "12px",
+							background: "#FAC164",
+							borderColor: "#FAC164",
+							borderRadius: "5px",
+							color: "#5F544D",
+							cursor: "pointer",
+						}} onClick={() => {
+							setSupportData({ email: "", text: "" })
+						}}>
+							Send
+						</button>
+					</div>
+				</div>
+			}
 		</div >
 	)
 }
