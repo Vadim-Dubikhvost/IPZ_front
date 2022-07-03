@@ -514,7 +514,6 @@ const Event = ({ event, setSelectedEvent }) => {
 							display: "flex",
 							flexDirection: "column",
 							justifyContent: "center",
-							marginTop: "5px",
 							maxHeight: "20px",
 							padding: "3px",
 							color: "blue",
@@ -522,7 +521,9 @@ const Event = ({ event, setSelectedEvent }) => {
 						>{tag}</span>
 					})}
 				</div>
-				<div>
+				<div style={{
+					marginBottom: "5px"
+				}}>
 					{"Created at" + " " + date}
 				</div>
 			</div>
